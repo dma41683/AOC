@@ -13,54 +13,65 @@ class Aoc2024Day6 {
     func part1() -> Int {
         
         var row = 0
-        var guardPosition = (-1,-1)
+        var guardPosition = Point(r: -1, c: -1)
         var map = Array<Array<Character>>()
         
         _ = FileReader(name:inputFile) {line in
             
             let r = Array(line)
             if let col = r.firstIndex(of: "^") {
-                guardPosition = (row,col)
+                guardPosition = Point(r: row,c: col)
             }
             map.append(r)
             row += 1
         }
         
-        return traverse(map: map, start: guardPosition)
+        return traverse(map: map, start: guardPosition)?.count ?? 0
     }
     
     func part2() -> Int {
         
         var row = 0
-        var guardPosition = (-1,-1)
+        var guardPosition = Point(r: -1, c: -1)
         var map = Array<Array<Character>>()
         
         _ = FileReader(name: inputFile) {line in
             
             let r = Array(line)
             if let col = r.firstIndex(of: "^") {
-                guardPosition = (row,col)
+                guardPosition = Point(r: row,c: col)
             }
             map.append(r)
             row += 1
         }
         var count = 0
-        map.indices.forEach {r in
-            map[r].indices.forEach { c in
-                let o = map[r][c]
-                if (o != "^" && o != "#") {
+        let visited = traverse(map: map, start: guardPosition)
+        
+        visited?.forEach {point in
+            let r = point.r
+            let c = point.c
+            let o = map[r][c]
+            if (o != "^" && o != "#") {
                     map[r][c] = "#"
-                    if (traverse(map: map, start: guardPosition) == -1) {
+                    if (traverse(map: map, start: guardPosition) == nil) {
                         count += 1
                     }
                     map[r][c] = "."
                     
                 }
-            }
         }
         return count
     }
 }
+
+
+
+struct Point: Hashable {
+  let r: Int
+  let c: Int
+}
+
+
 
 enum Direction {
     case UP
@@ -91,17 +102,17 @@ extension Direction {
     }
     
     
-    func getMove() -> (Int,Int) {
+    func getMove() -> Point {
        
         switch(self) {
         case .UP:
-            return (-1,0)
+            return Point(r: -1, c: 0)
         case .RIGHT:
-            return (0,1)
+            return Point(r: 0,c: 1)
         case .DOWN:
-            return (1,0)
+            return Point(r:1, c:0)
         case .LEFT:
-            return (0,-1)
+            return Point(r:0,c:-1)
         }
     }
     
@@ -121,39 +132,39 @@ extension Direction {
 
 extension Aoc2024Day6 {
     
-    func move(d: Direction, pos: (Int, Int)) -> (Int, Int) {
+    func move(d: Direction, pos: Point) -> Point {
         let m = d.getMove()
-        return (pos.0 + m.0, pos.1 + m.1)
+        return Point(r: pos.r + m.r,
+                     c: pos.c + m.c)
     }
     
-    func didLeaveMap(map: Array<Array<Character>>, pos: (Int, Int)) -> Bool {
-        return pos.0 < 0 ||
-        pos.0 >= map.count ||
-        pos.1 < 0 ||
-        pos.1 >= map[pos.0].count
+    func didLeaveMap(map: Array<Array<Character>>, pos: Point) -> Bool {
+        return pos.r < 0 ||
+        pos.r >= map.count ||
+        pos.c < 0 ||
+        pos.c >= map[pos.r].count
     }
     
-    func isobstacle(map: Array<Array<Character>>, pos: (Int,Int)) -> Bool {
-        return map[pos.0][pos.1] == "#"
+    func isobstacle(map: Array<Array<Character>>, pos: Point) -> Bool {
+        return map[pos.r][pos.c] == "#"
     }
 
     
-    func traverse(map: Array<Array<Character>>, start: (Int, Int)) -> Int {
+    func traverse(map: Array<Array<Character>>, start: Point) -> Set<Point>? {
        
         var direction = Direction.UP
         var pos = start
         var gone = false
-        var visted = Set<String>()
+        var visted = Set<Point>()
         var hasCycle = false
         var vistedWithDirection = Set<String>()
         while(!gone && !hasCycle) {
-            let s = "(\(pos.0),\(pos.1))"
-            visted.insert(s)
+            visted.insert(pos)
             let nextMove = move(d: direction, pos: pos)
             gone = didLeaveMap(map: map, pos: nextMove)
             if (!gone) {
                 if (isobstacle(map: map, pos: nextMove)) {
-                    let node = "\(s)\(direction.getLabel())"
+                    let node = "\(pos.r),\(pos.c)\(direction.getLabel())"
                     hasCycle = vistedWithDirection.contains(node)
                     vistedWithDirection.insert(node)
                     direction = direction.turnRight()
@@ -165,10 +176,10 @@ extension Aoc2024Day6 {
         }
         
         if (!hasCycle) {
-         return visted.count
+         return visted
         }
         else {
-            return -1
+            return nil
         }
         
     }
