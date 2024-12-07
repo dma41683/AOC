@@ -42,8 +42,15 @@ enum Operation {
     case C
 }
 
-extension Operation {
+extension Int {
     
+    func countDigits() -> Int {
+        return Int(log10(Double(self))) + 1
+    }
+}
+
+extension Operation {
+
     func doMath(a: Int, b: Int) -> Int {
         switch(self) {
         case .A:
@@ -51,8 +58,8 @@ extension Operation {
         case .M:
             return a * b
         case .C:
-            return Int("\(a)\(b)") ?? 0
-            
+            //return Int("\(a)\(b)") ?? 0
+            return a * Int(pow(Double(10), Double(b.countDigits()))) + b
         }
     }
 }
