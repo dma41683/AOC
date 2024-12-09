@@ -64,15 +64,6 @@ class Aoc2024Day6 {
     }
 }
 
-
-
-struct Point: Hashable {
-  let r: Int
-  let c: Int
-}
-
-
-
 enum Direction {
     case UP
     case DOWN
