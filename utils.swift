@@ -25,3 +25,35 @@ struct Point: Hashable {
     }
 }
 
+extension Int {
+    func isEven() -> Bool {
+        return self % 2 == 0
+    }
+}
+
+let charToIntMap: Dictionary<Character,Int> = [
+    "0" : 0,
+    "1" : 1,
+    "2" : 2,
+    "3" : 3,
+    "4" : 4,
+    "5" : 5,
+    "6" : 6,
+    "7" : 7,
+    "8" : 8,
+    "9" : 9
+]
+
+let intToCharMap: Dictionary<Int,Character> = [
+    0 : "0",
+    1 : "1",
+    2 : "2",
+    3 : "3",
+    4 : "4",
+    5 : "5",
+    6 : "6",
+    7 : "7",
+    8 : "8",
+    9 : "9"
+]
+
