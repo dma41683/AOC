@@ -2,7 +2,7 @@
 
 import Foundation
 
-struct Point: Hashable {
+struct Point: Hashable, CustomStringConvertible {
     let r: Int
     let c: Int
     
@@ -22,6 +22,9 @@ struct Point: Hashable {
     init(r: Int, c: Int) {
         self.r = r
         self.c = c
+    }
+    var description: String {
+        return "(\(x),\(y))"
     }
 }
 
