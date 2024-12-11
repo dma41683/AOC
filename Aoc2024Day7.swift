@@ -42,12 +42,6 @@ enum Operation {
     case C
 }
 
-extension Int {
-    
-    func countDigits() -> Int {
-        return Int(log10(Double(self))) + 1
-    }
-}
 
 extension Operation {
 

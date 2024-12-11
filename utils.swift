@@ -32,6 +32,10 @@ extension Int {
     func isEven() -> Bool {
         return self % 2 == 0
     }
+            
+        func countDigits() -> Int {
+            return Int(log10(Double(self))) + 1
+        }
 }
 
 let charToIntMap: Dictionary<Character,Int> = [
