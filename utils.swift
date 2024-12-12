@@ -64,3 +64,12 @@ let intToCharMap: Dictionary<Int,Character> = [
     9 : "9"
 ]
 
+extension Dictionary {
+
+    func printKeyValues() {
+        for (k,v) in self {
+            print("\(k) -> \(v)")
+        }
+    }
+}
+
