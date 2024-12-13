@@ -13,7 +13,7 @@ struct Point: Hashable, CustomStringConvertible {
     var y: Int {
         return r
     }
-        
+    
     init(x: Int, y: Int) {
         self.r = y
         self.c = x
@@ -27,6 +27,8 @@ struct Point: Hashable, CustomStringConvertible {
         return "(\(x),\(y))"
     }
 }
+
+
 
 extension Int {
     func isEven() -> Bool {
@@ -71,5 +73,19 @@ extension Dictionary {
             print("\(k) -> \(v)")
         }
     }
+}
+
+func parseInput(file: String) -> Dictionary<Point, Character> {
+    
+    var input = Dictionary<Point,Character>()
+    var r = 0
+    _ = FileReader.init(name: file) {line in
+        for (c, v) in Array(line).enumerated() {
+            input[Point(r: r, c: c)] = v
+        }
+        r += 1
+    }
+    
+    return input
 }
 

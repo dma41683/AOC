@@ -5,7 +5,7 @@ struct Aoc2024Day10 {
     private let inputFile = "2024/day10.txt"
     
     func part1() -> Int {
-        let input = parseInput()
+        let input = parseInput(file: inputFile)
         let startingPoints = getStartingPoints(input: input)
         let allowSteps = getAllowSeteps(input: input)
        
@@ -19,7 +19,7 @@ struct Aoc2024Day10 {
     }
     
     func part2() -> Int {
-        let input = parseInput()
+        let input = parseInput(file: inputFile)
         let startingPoints = getStartingPoints(input: input)
         let allowSteps = getAllowSeteps(input: input)
        
@@ -53,21 +53,6 @@ extension Aoc2024Day10 {
         }
         
         return allPoints
-    }
-    
-    
-    fileprivate func parseInput() -> Dictionary<Point, Character> {
-        
-        var input = Dictionary<Point,Character>()
-        var r = 0
-        _ = FileReader.init(name: inputFile) {line in
-            for (c, v) in Array(line).enumerated() {
-                input[Point(r: r, c: c)] = v
-            }
-            r += 1
-        }
-        
-        return input
     }
     
     fileprivate func getStartingPoints(input: [Point: Character]) -> [Point] {
