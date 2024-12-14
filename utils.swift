@@ -24,7 +24,7 @@ struct Point: Hashable, CustomStringConvertible {
         self.c = c
     }
     var description: String {
-        return "(\(x),\(y))"
+        return "(\(c),\(r))"
     }
 }
 
