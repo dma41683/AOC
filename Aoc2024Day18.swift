@@ -5,7 +5,7 @@ struct Aoc2024Day18 {
     private let maxPoint = Point(x: 70, y: 70)
     private let maxCorruptedBytes = 1024
     private let inputFile = "2024/day18.txt"
-
+    
     
     func part1() -> Int {
         
@@ -20,6 +20,35 @@ struct Aoc2024Day18 {
                 corruptedMemory.insert(Point(x: x, y: y))
             }
         }
+        return findPath(corruptedMemory: corruptedMemory).count
+    }
+    
+    func part2() -> Point {
+        
+        var corruptedMemory = Set<Point>()
+        var corruptedMemory2 = [Point]()
+        _ = FileReader.init(name: inputFile) { line in
+            
+            if (!line.isEmpty) {
+                let cord = line.components(separatedBy: ",")
+                let x = Int(cord[0]) ?? 0
+                let y = Int(cord[1]) ?? 0
+                let point = Point(x: x, y: y)
+                corruptedMemory.insert(point)
+                if (corruptedMemory.count >= maxCorruptedBytes) {
+                    corruptedMemory2.append(point)
+                }
+            }
+        }
+        var point = maxPoint
+        while (!corruptedMemory2.isEmpty && findPath(corruptedMemory: corruptedMemory).isEmpty) {
+            point = corruptedMemory2.removeLast()
+            corruptedMemory.remove(point)
+        }
+        return point
+    }
+    
+    private func findPath(corruptedMemory: Set<Point>) -> [Point] {
         
         var queue = [Point]()
         var visited = Set<Point>()
@@ -41,12 +70,11 @@ struct Aoc2024Day18 {
             }
         }
         var end = maxPoint
-        var steps = 0
-        while (end != start) {
-            steps += 1
+        var steps = [Point]()
+        while (end != start && found) {
+            steps.append(end)
             end = parent[end] ?? Point(x: -1, y: -1)
         }
-        
         return steps
     }
     
