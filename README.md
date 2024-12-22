@@ -1,7 +1,11 @@
 # [Advent Of Code](https://adventofcode.com/)
 
 ## 2024
-
+- [Day 19](https://github.com/dma41683/AOC-Swift/blob/main/Aoc2024Day19.swift)
+- [Day 18](https://github.com/dma41683/AOC-Swift/blob/main/Aoc2024Day18.swift)
+- [Day 14](https://github.com/dma41683/AOC-Swift/blob/main/Aoc2024Day14.swift)
+- [Day 13](https://github.com/dma41683/AOC-Swift/blob/main/Aoc2024Day13.swift)
+ - [Day 12](https://github.com/dma41683/AOC-Swift/blob/main/Aoc2024Day12.swift)
 - [Day 11](https://github.com/dma41683/AOC-Swift/blob/main/Aoc2024Day11.swift)
 - [Day 10](https://github.com/dma41683/AOC-Swift/blob/main/Aoc2024Day10.swift)
 - [Day 9](https://github.com/dma41683/AOC-Swift/blob/main/Aoc2024Day9.swift)
