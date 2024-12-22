@@ -63,7 +63,7 @@ struct Aoc2024Day14 {
         
         var set = Set<Point>()
         var time = 0
-        while (set.count < 500) {
+        while (set.count < robots.count) {
             time += 1
             let result = timePass(robots: robots, time: time)
             set = Set(result.map{$0.0})
