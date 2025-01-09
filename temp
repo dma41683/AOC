@@ -1,0 +1,146 @@
+
+
+import Foundation
+
+
+class Aoc2024Day12 {
+    
+    private let inputFile = "2024/day12.txt"
+    
+    private var plots: Set<Point>!
+    private typealias CostFunction = ([Fence]) -> Int
+    
+    
+    func part1() -> Int {
+        
+        return calculateCost {results in
+            results.map {fence in fence.area * fence.edges.count}.reduce(0, +)
+        }
+    }
+    
+    func part2() -> Int  {
+        return calculateCost {results in
+            results.map {fence in
+                fence.area *  countSides(fence: fence)
+            }.reduce(0, +)
+        }
+    }
+    
+    private func countSides(fence: Fence) -> Int {
+        
+        let list = fence.sortEdges()
+        print(list)
+        var i = 0
+        var sides = 0
+        var prev: Line? = nil
+        while (i < list.count) {
+            let current = list[i]
+            if let prev = prev {
+                
+                if (prev.r == current.r && prev.c == current.c + 1) {
+                    
+                }
+                else if(prev.c == current.c && prev.r == current.r + 1) {
+                    
+                }
+                else {
+                    sides += 1
+                }
+                
+                
+                
+            }
+            else {
+                sides += 1
+            }
+            prev = current
+            
+            i += 1
+        }
+        
+        
+        return sides
+    }
+    
+    private func calculateCost(costFunction: CostFunction) -> Int {
+        
+        let input = parseInput(file: test)
+        plots = Set(input.keys)
+        var results = [Fence]()
+        
+        while(!plots.isEmpty) {
+            if let point = plots.first {
+                let r =  measure(point: point, input: input)
+                results.append(r)
+            }
+        }
+        
+        return costFunction(results)
+    }
+    
+    fileprivate func measure(point: Point, input: [Point: Character]) -> Fence {
+        
+        if (!plots.contains(point)) {
+            return Fence(area: 0, edges: [])
+        }
+        plots.remove(point)
+        
+        
+        let up = Point(r: point.r, c: point.c - 1) // up
+        let down = Point(r: point.r, c: point.c + 1) // down
+        let left = Point(r: point.r - 1, c: point.c) //left
+        let right = Point(r: point.r + 1, c: point.c) // rigt
+        
+        let directions = [
+            Side(point: up, line: Line(type: "h", point: up) ),
+            Side(point: down, line:Line(type: "h", point: down)),
+            Side(point: left, line: Line(type: "v", point: left)),
+            Side(point: right, line:  Line(type: "v", point: right))
+        ]
+        
+        let plot = input[point]
+        let perimeter = directions
+            .filter { side in input[side.point] != plot }
+            .map {side in side.line }
+        
+        let m = directions
+            .filter {side in input[side.point] == plot }
+            .map {side in measure(point: side.point, input: input) }
+            .reduce(Fence(area: 0,
+                          edges: [])) {(f1, f2) in Fence(area: f1.area + f2.area,
+                                                         edges: f1.edges + f2.edges) }
+        
+        return Fence(area: m.area + 1,
+                     edges: m.edges + perimeter)
+    }
+}
+
+fileprivate struct Fence: CustomStringConvertible {
+    
+    let area: Int
+    let edges: [Line]
+    
+    var description: String {
+        return "(\(area), \( edges))"
+    }
+    
+    func sortEdges() -> [Line] {
+        
+        return edges.sorted { p1, p2 in
+            p1.c < p2.c || p1.c == p2.c && p1.r < p2.r
+            
+        }
+    }
+}
+
+fileprivate struct Side {
+    
+    let point: Point
+    let line: Line
+}
+
+fileprivate struct Line {
+    let type: Character
+    let point: Point
+}
+

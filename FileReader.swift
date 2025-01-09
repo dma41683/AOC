@@ -7,7 +7,7 @@ class FileReader {
     
     let filename: String
     
-    let path = "<PATH>"
+    let path = "/Users/dma/development/AdventOfCode/input/"
     
     
     init(name: String, cb: (String) -> Void) {
